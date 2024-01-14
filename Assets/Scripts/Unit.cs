@@ -1,15 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Unit : MonoBehaviour
 {
     const float DISTANCE_THRESHOLD = 0.1f;
-
-    [SerializeField]
-    private float speed = 5f;
+    [SerializeField] private float movementSpeed = 5f;
+    [SerializeField] float rotationSpeed = 7f;
+    [SerializeField] private Animator unitAnimator;
 
     private Vector3 targetPosition;
 
@@ -19,23 +15,24 @@ public class Unit : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-
+        targetPosition = transform.position;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Vector3.Distance(targetPosition, transform.position) > DISTANCE_THRESHOLD)
         {
             Vector3 moveDirection = (targetPosition - transform.position).normalized;
-            transform.position += speed * Time.deltaTime * moveDirection;
+            transform.position += movementSpeed * Time.deltaTime * moveDirection;
+            transform.forward = Vector3.Lerp(transform.forward, moveDirection, rotationSpeed * Time.deltaTime);
+            unitAnimator.SetBool("IsWalking", true);
         }
-
-        if (Input.GetMouseButtonDown(0))
+        else
         {
-            Move(MouseWorld.GetMousePosition());
+            unitAnimator.SetBool("IsWalking", false);
         }
     }
 }

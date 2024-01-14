@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MouseWorld : MonoBehaviour
@@ -15,22 +13,27 @@ public class MouseWorld : MonoBehaviour
         Instance = this;
     }
 
+    private void Update()
+    {
+        if (Instance.shouldRenderMousePointer)
+        {
+            Instance.mousePointer.SetActive(true);
+            GetMousePosition();
+        }
+        else
+        {
+            Instance.mousePointer.SetActive(false);
+        }
+    }
+
     public static Vector3 GetMousePosition()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(ray, out RaycastHit hitInfo, float.MaxValue, Instance.mouseLayerMask);
-        if (Instance.shouldRenderMousePointer)
-        {
-            if (hitInfo.collider == null)
-            {
-                Instance.mousePointer.SetActive(false);
-            }
-            else
-            {
-                Instance.mousePointer.SetActive(true);
-                Instance.mousePointer.transform.position = hitInfo.point;
-            }
-        }
+
+
+        if (hitInfo.collider)
+            Instance.mousePointer.transform.position = hitInfo.point;
 
         return hitInfo.point;
     }
