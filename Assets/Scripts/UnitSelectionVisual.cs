@@ -19,7 +19,6 @@ public class UnitSelectionVisual : MonoBehaviour
 
     void UnitActionSystem_OnSelectedUnitChanged(object sender, System.EventArgs e)
     {
-        Debug.Log("UnitActionSystem_OnSelectedUnitChanged");
         if (((UnitActionSystem)sender).GetSelectedUnit() == unit)
         {
             unitSelectionVisual.SetActive(true);
