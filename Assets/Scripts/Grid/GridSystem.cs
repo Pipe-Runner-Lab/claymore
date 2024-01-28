@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// A class that represents an entire grid - consists of many grid objects.
+/// </summary>
 public class GridSystem
 {
     public int width;

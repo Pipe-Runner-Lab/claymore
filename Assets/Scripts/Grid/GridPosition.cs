@@ -1,5 +1,8 @@
 using System;
 
+/// <summary>
+/// A struct that represents a position on the grid.
+/// </summary>
 public struct GridPosition
 {
     public readonly int x;
@@ -24,6 +27,11 @@ public struct GridPosition
     public static bool operator !=(GridPosition a, GridPosition b)
     {
         return !(a == b);
+    }
+
+    public static GridPosition operator +(GridPosition a, GridPosition b)
+    {
+        return new GridPosition(a.x + b.x, a.z + b.z);
     }
 
     public override bool Equals(object obj)

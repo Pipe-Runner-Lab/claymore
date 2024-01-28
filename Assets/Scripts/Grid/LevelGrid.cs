@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A class responsible for creating and managing the grid when the game starts.
+/// Singleton pattern is used to ensure that there is only one instance of this class.
+/// </summary>
 public class LevelGrid : MonoBehaviour
 {
     public static LevelGrid Instance { get; private set; }

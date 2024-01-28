@@ -2,24 +2,12 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    const float DISTANCE_THRESHOLD = 0.1f;
-    [SerializeField] private float movementSpeed = 5f;
-    [SerializeField] float rotationSpeed = 7f;
-    [SerializeField] private Animator unitAnimator;
-
-    private Vector3 targetPosition;
-
     private GridPosition currentGridPosition;
+    private MoveAction moveAction;
 
-    public void Move(Vector3 position)
-    {
-        targetPosition = position;
-    }
-
-    // Start is called before the first frame update
     private void Awake()
     {
-        targetPosition = transform.position;
+        moveAction = GetComponent<MoveAction>();
     }
 
     private void Start()
@@ -31,23 +19,21 @@ public class Unit : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (Vector3.Distance(targetPosition, transform.position) > DISTANCE_THRESHOLD)
+        GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        if (newGridPosition != currentGridPosition)
         {
-            Vector3 moveDirection = (targetPosition - transform.position).normalized;
-            transform.position += movementSpeed * Time.deltaTime * moveDirection;
-            transform.forward = Vector3.Lerp(transform.forward, moveDirection, rotationSpeed * Time.deltaTime);
-            unitAnimator.SetBool("IsWalking", true);
+            LevelGrid.Instance.MoveUnitFromTo(this, currentGridPosition, newGridPosition);
+            currentGridPosition = newGridPosition;
+        }
+    }
 
-            GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
-            if (newGridPosition != currentGridPosition)
-            {
-                LevelGrid.Instance.MoveUnitFromTo(this, currentGridPosition, newGridPosition);
-                currentGridPosition = newGridPosition;
-            }
-        }
-        else
-        {
-            unitAnimator.SetBool("IsWalking", false);
-        }
+    public MoveAction GetMoveAction()
+    {
+        return moveAction;
+    }
+
+    public GridPosition GetCurrentGridPosition()
+    {
+        return currentGridPosition;
     }
 }

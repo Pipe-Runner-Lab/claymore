@@ -1,5 +1,9 @@
 using System.Collections.Generic;
 
+/// <summary>
+/// Each grid object represents a position on the grid.
+/// It also holds a reference to the grid system it is part of.
+/// </summary>
 public class GridObject
 {
   private readonly GridSystem gridSystem;

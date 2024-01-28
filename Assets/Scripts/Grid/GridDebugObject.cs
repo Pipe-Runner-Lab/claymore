@@ -1,8 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Used for debugging purposes. Shows the grid position of the object.
+/// Also shows if there is a unit on the grid position.
+/// </summary>
 public class GridDebugObject : MonoBehaviour
 {
     [SerializeField] private GameObject textMeshGameObject;
