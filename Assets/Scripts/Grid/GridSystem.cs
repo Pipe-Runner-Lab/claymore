@@ -5,9 +5,9 @@ using UnityEngine;
 /// </summary>
 public class GridSystem
 {
-    public int width;
-    public int height;
-    float cellSize = 2f;
+    public int width { get; private set; }
+    public int height { get; private set; }
+    public float cellSize { get; private set; } = 2f;
 
     private GridObject[,] gridObjects;
 
@@ -29,11 +29,21 @@ public class GridSystem
         }
     }
 
-    private Vector3 GetWorldPosition(GridPosition gridPosition)
+    /// <summary>
+    /// Converts a grid position to a world position.
+    /// </summary>
+    /// <param name="gridPosition"></param>
+    /// <returns></returns>
+    public Vector3 GetWorldPosition(GridPosition gridPosition)
     {
         return new Vector3(gridPosition.x, 0, gridPosition.z) * cellSize;
     }
 
+    /// <summary>
+    /// Converts a world position to a grid position.
+    /// </summary>
+    /// <param name="WorldPosition"></param>
+    /// <returns></returns>
     public GridPosition GetGridPosition(Vector3 WorldPosition)
     {
         return new GridPosition(Mathf.FloorToInt(WorldPosition.x / cellSize), Mathf.RoundToInt(WorldPosition.z / cellSize));
@@ -57,5 +67,10 @@ public class GridSystem
     public GridObject GetGridObject(GridPosition gridPosition)
     {
         return gridObjects[gridPosition.x, gridPosition.z];
+    }
+
+    public bool IsValidGridPosition(GridPosition gridPosition)
+    {
+        return gridPosition.x >= 0 && gridPosition.x < width && gridPosition.z >= 0 && gridPosition.z < height;
     }
 }

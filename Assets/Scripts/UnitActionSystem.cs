@@ -1,6 +1,10 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// A class responsible for handling unit actions. Based on clicks, it will either select a unit,
+/// or apply move action on the unit if already selected.
+/// </summary>
 public class UnitActionSystem : MonoBehaviour
 {
     // Singleton pattern (set is private so that properties cannot be changed from outside)
@@ -28,7 +32,12 @@ public class UnitActionSystem : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             if (HandleUnitSelection()) return;
-            if (unit) unit.GetMoveAction().Move(MouseWorld.GetMousePosition());
+            if (unit)
+            {
+                GridPosition gridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetMousePosition());
+                if (unit.GetMoveAction().IsValidGridPosition(gridPosition))
+                    unit.GetMoveAction().Move(gridPosition);
+            }
         }
     }
 
